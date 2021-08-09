@@ -25,6 +25,7 @@ source-repository head
 library
   exposed-modules:
       Lib
+      RSS.Parser
   other-modules:
       Paths_rss_server_proto
   hs-source-dirs:
@@ -32,7 +33,10 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
+    , bytestring
+    , hxt
     , servant-server
+    , text
     , wai
     , warp
   default-language: Haskell2010
@@ -47,8 +51,11 @@ executable rss-server-proto-exe
   build-depends:
       aeson
     , base
+    , bytestring
+    , hxt
     , rss-server-proto
     , servant-server
+    , text
     , wai
     , warp
   default-language: Haskell2010
@@ -64,11 +71,14 @@ test-suite rss-server-proto-test
   build-depends:
       aeson
     , base
+    , bytestring
     , hspec
     , hspec-wai
     , hspec-wai-json
+    , hxt
     , rss-server-proto
     , servant-server
+    , text
     , wai
     , warp
   default-language: Haskell2010

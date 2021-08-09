@@ -24,6 +24,18 @@ dependencies:
 - servant-server
 - wai
 - warp
+- hxt
+- text
+# - unordered-containers
+# - hashable
+# - vector
+- bytestring
+# - hxt-tagsoup
+# - hxt-expat
+# - containers
+# - regex-posix
+# - tagsoup
+
 
 library:
   source-dirs: src
