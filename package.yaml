@@ -28,6 +28,9 @@ dependencies:
   - text
   - aeson
   - unordered-containers
+  - base-compat-batteries
+  - http-media
+  - either
   # - hashable
   - vector
   - bytestring

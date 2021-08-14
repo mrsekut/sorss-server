@@ -1,5 +1,4 @@
-{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
-module RSS.Parser where
+module RSS.Parser (ppp) where
 
 import           Text.XML.HXT.Core
 
@@ -27,6 +26,16 @@ main = do
     . map (Aeson.encode . wrapRoot . xmlTreeToJSON)
     $ rootElems
 
+
+ppp = do
+  rootElems <- runX $
+    readDocument [] "hoge.xml"
+    >>> getChildren >>> isElem
+  pure $ a rootElems
+
+
+b = readDocument [] "hoge.xml" >>> getChildren >>> isElem
+a = map (wrapRoot . xmlTreeToJSON)
 
 
 data Xml

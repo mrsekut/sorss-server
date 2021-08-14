@@ -25,7 +25,6 @@ source-repository head
 library
   exposed-modules:
       Lib
-      RSS.Json
       RSS.Parser
   other-modules:
       Paths_rss_server_proto
@@ -34,8 +33,11 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
+    , base-compat-batteries
     , bytestring
     , containers
+    , either
+    , http-media
     , hxt
     , servant-server
     , text
@@ -55,8 +57,11 @@ executable rss-server-proto-exe
   build-depends:
       aeson
     , base
+    , base-compat-batteries
     , bytestring
     , containers
+    , either
+    , http-media
     , hxt
     , rss-server-proto
     , servant-server
@@ -78,11 +83,14 @@ test-suite rss-server-proto-test
   build-depends:
       aeson
     , base
+    , base-compat-batteries
     , bytestring
     , containers
+    , either
     , hspec
     , hspec-wai
     , hspec-wai-json
+    , http-media
     , hxt
     , rss-server-proto
     , servant-server

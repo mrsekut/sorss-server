@@ -1,4 +1,46 @@
-<document title="My Title">
-  <para>This is a paragraph. It has <em>emphasized</em> and <strong>strong</strong> words.</para>
-  <image href="myimage.png"/>
-</document>
+<rss version="2.0">
+<channel>
+<title>ITmedia NEWS 最新記事一覧</title>
+<link>https://www.itmedia.co.jp/news/</link>
+<description>ITmedia NEWS の最新記事一覧です。</description>
+<language>ja</language>
+<copyright>Copyright (c) 2021 ITmedia, Inc. All Rights Reserved.</copyright>
+<pubDate>Fri, 13 Aug 2021 22:25:00 +0900</pubDate>
+<item>
+<title>映画「スラムダンク」は22年秋公開、原作者の井上雄彦さんが自ら脚本／監督に</title>
+<link>https://www.itmedia.co.jp/news/articles/2108/13/news147.html</link>
+<description>映画「SLAM DUNK」（スラムダンク）の公開が2022年秋に決まった。原作者の井上雄彦さんが自ら脚本と監督を務める。</description>
+<pubDate>Fri, 13 Aug 2021 21:19:00 +0900</pubDate>
+</item>
+<item>
+<title>Spotify、GoogleのスマートウォッチOS「Wear OS」でもオフライン再生を可能に</title>
+<link>https://www.itmedia.co.jp/news/articles/2108/13/news091.html</link>
+<description>SpotifyはGoogleのスマートウォッチOS「Wear OS」版アプリをアップデートし、コンテンツのオフライン再生を可能にする。最新の「Wear OS 3」だけでなく先代でも可能だ。同じ機能はApple Watchには5月からある。</description>
+<pubDate>Fri, 13 Aug 2021 13:21:00 +0900</pubDate>
+</item>
+<item>
+<title>Twitter、フォローボタンの色を変更も「見づらい」と不評　白いボタンの意味が真逆に</title>
+<link>https://www.itmedia.co.jp/news/articles/2108/12/news083.html</link>
+<description>Twitterが、フォローボタンの色を変更するなどUIに変更を加えた。しかしユーザーからは「見づらい」「分かりにくい」と否定的な声が上がっている。同社によれば、ボタンの色を変えたのは「コントラストを高くすることで、投稿される写真や映像に注目を集めるため」という。</description>
+<pubDate>Thu, 12 Aug 2021 10:55:00 +0900</pubDate>
+</item>
+<item>
+<title>防水＆ペン対応の「Galaxy Z Fold3 5G」発表　3代目になる“フォルダブル”はモバイルの未来か</title>
+<link>https://www.itmedia.co.jp/news/articles/2108/12/news080.html</link>
+<description>韓国Samsung Electronicsが、フォルダブルスマホの新モデル「Galaxy Z Fold3 5G」と「Galaxy Z Flip3 5G」を発表。同社のモバイル事業トップは「フォルダブルはスマホの新しいスタンダード」と胸を張る。3代目になるフォルダブルスマホの進化点を見ていく。</description>
+<pubDate>Thu, 12 Aug 2021 10:15:00 +0900</pubDate>
+</item>
+<item>
+<title>エヴァ新劇場版の名せりふ、海外ではこうなる　11言語による名場面集をYouTubeで公開</title>
+<link>https://www.itmedia.co.jp/news/articles/2108/12/news079.html</link>
+<description>Amazonは12日、「シン・エヴァンゲリオン劇場版」独占配信を記念して、新劇場版4作品の名せりふを世界11言語で吹き替えた名場面集をYouTubeで公開した。</description>
+<pubDate>Thu, 12 Aug 2021 10:09:00 +0900</pubDate>
+</item>
+<item>
+<title>Amazon、15億ドルの自社専用空輸拠点「Air Hub」をケンタッキーに開港　配送高速化</title>
+<link>https://www.itmedia.co.jp/news/articles/2108/12/news074.html</link>
+<description>Amazonが、広大な自社専用空輸拠点をケンタッキー州北部に開設した。約15億ドルを投じた「Air Hub」には自社貨物機の格納庫やロボットによる仕分けセンターなどがあり、全米の配送拠点になる。</description>
+<pubDate>Thu, 12 Aug 2021 09:15:00 +0900</pubDate>
+</item>
+</channel>
+</rss>
