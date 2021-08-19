@@ -1,100 +1,123 @@
-module RSS.Parser (ppp) where
+{-# LANGUAGE DeriveGeneric #-}
 
-import           Text.XML.HXT.Core
+module RSS.Parser (RSS, parser) where
 
-import qualified Data.Aeson                 as Aeson
-import qualified Data.ByteString.Lazy.Char8 as BS
-import qualified Data.HashMap.Strict        as HashMap
-import qualified Data.Map                   as M
-import           Data.Maybe
-import qualified Data.Text                  as T
-import           Data.Tree.NTree.TypeDefs
-import qualified Data.Vector                as Vector
-import           System.Console.GetOpt
-import           System.Environment
-import           System.Exit
-import           System.IO
+import qualified Data.Aeson               as Aeson
+import           Data.Tree.NTree.TypeDefs (NTree (NTree))
+import           GHC.Generics             (Generic)
+import           Text.XML.HXT.Core        ((>>>))
+import qualified Text.XML.HXT.Core        as HXT
 
 
-main :: IO ()
-main = do
-  rootElems <- runX $
-    readDocument [] "hoge.xml"
-    >>> getChildren >>> isElem
-  BS.putStr
-    . BS.intercalate (BS.pack "\n")
-    . map (Aeson.encode . wrapRoot . xmlTreeToJSON)
-    $ rootElems
+
+-- Types
+
+data RSS = RSS
+  { sVersion  :: Float
+  , sChannels :: Channels
+  } deriving (Show, Eq, Generic)
+
+instance Aeson.FromJSON RSS
+instance Aeson.ToJSON RSS
 
 
-ppp = do
-  rootElems <- runX $
-    readDocument [] "hoge.xml"
-    >>> getChildren >>> isElem
-  pure $ a rootElems
+data Channels = Channels
+  { title       :: String
+  , link        :: String
+  , description :: String
+  , language    :: String
+  , copyright   :: String
+  , pubDate     :: String
+  , items       :: [Item]
+  } deriving (Show, Eq, Generic)
+
+instance Aeson.FromJSON Channels
+instance Aeson.ToJSON Channels
 
 
-b = readDocument [] "hoge.xml" >>> getChildren >>> isElem
-a = map (wrapRoot . xmlTreeToJSON)
+data Item = Item
+  { itemTitle       :: String
+  , itemLink        :: String
+  , itemDescription :: String
+  , itemPubDate     :: String
+  } deriving (Show, Eq, Generic)
+
+instance Aeson.FromJSON Item
+instance Aeson.ToJSON Item
 
 
-data Xml
-  = Text
-  | Tag String
-  | Attr String
-  deriving (Eq, Ord, Show)
+
+-- Parser
+
+parser :: IO RSS
+parser = do
+  rootElems <- HXT.runX $
+    HXT.xunpickleDocument xpRss
+      [ HXT.withValidate HXT.no
+      , HXT.withTrace 1
+      , HXT.withRemoveWS HXT.yes
+      , HXT.withPreserveComment HXT.no
+      ] "hoge.xml"
+    >>> proseccRSS
+  pure $ head rootElems
 
 
-wrapRoot :: Maybe (Xml, Aeson.Value) -> Aeson.Value
-wrapRoot Nothing       = Aeson.Null
-wrapRoot (Just (a, b)) = Aeson.object [(packJSValueName a, b)]
+proseccRSS :: HXT.IOSArrow RSS RSS
+proseccRSS = HXT.arrIO pure
 
 
-xmlTreeToJSON :: XmlTree -> Maybe (Xml, Aeson.Value)
-xmlTreeToJSON node@(NTree (XTag qName _) children)
-  = Just (Tag (localPart qName), tagMapToJSValue objMap)
-  where
-    objMap =
-        arrayValuesToJSONArrays    -- unify into a single map,
-      . concatMapValues            -- grouping into arrays by pair name
-      . map (uncurry M.singleton)  -- convert pairs to maps
-      . (++) attrVals
-      . catMaybes                  -- filter out the empty values (unconvertable nodes)
-      $ map xmlTreeToJSON children -- convert xml nodes to Maybe (QName, Aeson.Value) pairs
-
-    attrVals =
-      map (Attr *** Aeson.String . T.pack) $ getAttrVals node
-
-xmlTreeToJSON (NTree (XText str) _)
-  | T.null text = Nothing
-  | otherwise = Just (Text, Aeson.String text)
-  where
-    text = T.strip $ T.pack str
 
 
-tagMapToJSValue :: M.Map Xml Aeson.Value -> Aeson.Value
-tagMapToJSValue m = case M.toList m of
-  [(Text, val)] -> val
-  _             -> Aeson.Object . HashMap.fromList . (map . first) packJSValueName $ M.toList m
+-- XML Pickler
+
+instance HXT.XmlPickler RSS where
+  xpickle = xpRss
 
 
-arrayValuesToJSONArrays :: M.Map k [Aeson.Value] -> M.Map k Aeson.Value
-arrayValuesToJSONArrays = M.mapMaybe f
-  where
-    f []  = Nothing -- will be discarded
-    f [x] = Just x  -- don't store as array, just a single value
-    f xss = Just $ Aeson.Array . Vector.fromList $ xss -- arrays with more than one element are kept
+xpRss :: HXT.PU RSS
+xpRss
+  = HXT.xpElem "rss"
+  $ HXT.xpWrap (uncurry RSS, \s -> (sVersion s, sChannels s))
+  $ HXT.xpPair (HXT.xpAttr "version" HXT.xpPrim) HXT.xpickle
 
 
-concatMapValues :: (Ord k) => [M.Map k v] -> M.Map k [v]
-concatMapValues = M.unionsWith (++) . (fmap . fmap) (: [])
+instance HXT.XmlPickler Channels where
+  xpickle = xpChannels
 
 
-getAttrVals :: XmlTree -> [(String, String)]
-getAttrVals = runLA (getAttrl >>> getName &&& (getChildren >>> getText))
+xpChannels :: HXT.PU Channels
+xpChannels
+  = HXT.xpElem "channel"
+  $ HXT.xpWrap ( \(t,l,d,la,c,p,i) -> Channels t l d la c p i
+               , \t -> ( title t
+                       , link t
+                       , description t
+                       , language t
+                       , copyright t
+                       , pubDate t
+                       , items t))
+  $ HXT.xp7Tuple (HXT.xpElem "title" HXT.xpText)
+                 (HXT.xpElem "link" HXT.xpText)
+                 (HXT.xpElem "description" HXT.xpText)
+                 (HXT.xpElem "language" HXT.xpText)
+                 (HXT.xpElem "copyright" HXT.xpText)
+                 (HXT.xpElem "pubDate" HXT.xpText)
+                 HXT.xpickle
 
 
-packJSValueName :: Xml -> T.Text
-packJSValueName Text     = T.pack "value"
-packJSValueName (Attr x) = T.pack x
-packJSValueName (Tag x)  = T.pack x
+instance HXT.XmlPickler Item where
+  xpickle = xpItem
+
+
+xpItem :: HXT.PU Item
+xpItem
+  = HXT.xpElem "item"
+  $  HXT.xpWrap ( HXT.uncurry4 Item
+               , \t -> ( itemTitle t
+                       , itemLink t
+                       , itemDescription t
+                       , itemPubDate t))
+  $ HXT.xp4Tuple (HXT.xpElem "title" HXT.xpText)
+                 (HXT.xpElem "link" HXT.xpText)
+                 (HXT.xpElem "description" HXT.xpText)
+                 (HXT.xpElem "pubDate" HXT.xpText)
