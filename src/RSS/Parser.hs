@@ -49,15 +49,16 @@ instance Aeson.ToJSON Item
 
 -- Parser
 
-parser :: IO RSS
-parser = do
+parser :: String -> IO RSS
+parser xml = do
   rootElems <- HXT.runX $
-    HXT.xunpickleDocument xpRss
+    HXT.readString
       [ HXT.withValidate HXT.no
       , HXT.withTrace 1
       , HXT.withRemoveWS HXT.yes
       , HXT.withPreserveComment HXT.no
-      ] "hoge.xml"
+      ] xml
+    >>> HXT.xunpickleVal xpRss
     >>> proseccRSS
   pure $ head rootElems
 

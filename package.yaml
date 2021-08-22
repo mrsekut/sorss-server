@@ -31,14 +31,11 @@ dependencies:
   - base-compat-batteries
   - http-media
   - either
-  # - hashable
   - vector
   - bytestring
-  # - hxt-tagsoup
-  # - hxt-expat
   - containers
-  # - regex-posix
-# - tagsoup
+  - http-conduit
+  - utf8-string
 
 library:
   source-dirs: src
