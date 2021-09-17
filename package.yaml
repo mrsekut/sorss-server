@@ -2,9 +2,9 @@ name: rss-server-proto
 version: 0.1.0.0
 github: "githubuser/rss-server-proto"
 license: BSD3
-author: "Author name here"
+author: "mrsekut"
 maintainer: "example@example.com"
-copyright: "2021 Author name here"
+copyright: "2021 mrsekut"
 
 extra-source-files:
   - README.md
@@ -19,26 +19,31 @@ extra-source-files:
 description: Please see the README on GitHub at <https://github.com/githubuser/rss-server-proto#readme>
 
 dependencies:
+  - aeson
+  - aeson
   - base >= 4.7 && < 5
-  - aeson
-  - servant-server
-  - wai
-  - warp
-  - hxt
-  - text
-  - aeson
-  - unordered-containers
   - base-compat-batteries
-  - http-media
-  - either
-  - vector
   - bytestring
   - containers
+  - either
   - http-conduit
+  - http-media
+  - hxt
+  - servant-server
+  - text
+  - unordered-containers
   - utf8-string
+  - vector
+  - wai
+  - wai-cors
+  - warp
 
 library:
   source-dirs: src
+  ghc-options:
+    - -Wall
+    - -Wcompat
+    - -Wmissing-import-lists
 
 executables:
   rss-server-proto-exe:

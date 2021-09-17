@@ -10,6 +10,7 @@ import           Control.Monad.IO.Class        (liftIO)
 import qualified Data.ByteString.Lazy.Internal as BI
 import qualified Network.HTTP.Simple           as Simple
 import qualified Network.Wai.Handler.Warp      as Warp
+import           Network.Wai.Middleware.Cors   (simpleCors)
 import qualified RSS.Parser                    as RSS
 import           Servant                       (type (:>))
 import qualified Servant                       as S
@@ -20,7 +21,7 @@ import qualified Servant                       as S
 
 -- Routing
 
-type API = "rss"  :> S.Get '[S.JSON] RSS.RSS
+type API = "api" :> "rss"  :> S.Get '[S.JSON] RSS.RSS
 
 
 
@@ -31,7 +32,7 @@ main = Warp.run 8081 app
 
 
 app :: S.Application
-app = S.serve api server
+app = simpleCors $ S.serve api server
 
 
 api :: S.Proxy API

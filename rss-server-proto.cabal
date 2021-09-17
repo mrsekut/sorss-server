@@ -9,9 +9,9 @@ version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/rss-server-proto#readme>
 homepage:       https://github.com/githubuser/rss-server-proto#readme
 bug-reports:    https://github.com/githubuser/rss-server-proto/issues
-author:         Author name here
+author:         mrsekut
 maintainer:     example@example.com
-copyright:      2021 Author name here
+copyright:      2021 mrsekut
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
@@ -30,6 +30,7 @@ library
       Paths_rss_server_proto
   hs-source-dirs:
       src
+  ghc-options: -Wall -Wcompat -Wmissing-import-lists
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -46,6 +47,7 @@ library
     , utf8-string
     , vector
     , wai
+    , wai-cors
     , warp
   default-language: Haskell2010
 
@@ -73,6 +75,7 @@ executable rss-server-proto-exe
     , utf8-string
     , vector
     , wai
+    , wai-cors
     , warp
   default-language: Haskell2010
 
@@ -104,5 +107,6 @@ test-suite rss-server-proto-test
     , utf8-string
     , vector
     , wai
+    , wai-cors
     , warp
   default-language: Haskell2010
