@@ -2,11 +2,10 @@
 
 module RSS.Parser (RSS, parser) where
 
-import qualified Data.Aeson               as Aeson
-import           Data.Tree.NTree.TypeDefs (NTree (NTree))
-import           GHC.Generics             (Generic)
-import           Text.XML.HXT.Core        ((>>>))
-import qualified Text.XML.HXT.Core        as HXT
+import qualified Data.Aeson        as Aeson
+import           GHC.Generics      (Generic)
+import           Text.XML.HXT.Core ((>>>))
+import qualified Text.XML.HXT.Core as HXT
 
 
 
@@ -38,7 +37,7 @@ instance Aeson.ToJSON Channels
 data Item = Item
   { itemTitle       :: String
   , itemLink        :: String
-  , itemDescription :: String
+  , itemDescription :: Maybe String
   , itemPubDate     :: String
   } deriving (Show, Eq, Generic)
 
@@ -120,5 +119,5 @@ xpItem
                        , itemPubDate t))
   $ HXT.xp4Tuple (HXT.xpElem "title" HXT.xpText)
                  (HXT.xpElem "link" HXT.xpText)
-                 (HXT.xpElem "description" HXT.xpText)
+                 (HXT.xpOption $ HXT.xpElem "description" HXT.xpText)
                  (HXT.xpElem "pubDate" HXT.xpText)
