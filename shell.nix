@@ -14,5 +14,6 @@ in pkgs.mkShell {
     ghc
     stack
     zlib
+    hlint
   ];
 }
