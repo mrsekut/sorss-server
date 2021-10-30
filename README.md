@@ -1,1 +1,1 @@
-# rss-server-proto
+# sorss-server

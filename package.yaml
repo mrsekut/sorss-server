@@ -1,6 +1,6 @@
-name: rss-server-proto
+name: sorss-server
 version: 0.1.0.0
-github: "githubuser/rss-server-proto"
+github: "githubuser/sorss-server"
 license: BSD3
 author: "mrsekut"
 maintainer: "example@example.com"
@@ -16,7 +16,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description: Please see the README on GitHub at <https://github.com/githubuser/rss-server-proto#readme>
+description: Please see the README on GitHub at <https://github.com/githubuser/sorss-server#readme>
 
 dependencies:
   - aeson
@@ -46,7 +46,7 @@ library:
     - -Wmissing-import-lists
 
 executables:
-  rss-server-proto-exe:
+  sorss-server-exe:
     main: Main.hs
     source-dirs: app
     ghc-options:
@@ -55,10 +55,10 @@ executables:
       - -with-rtsopts=-N
     dependencies:
       - base
-      - rss-server-proto
+      - sorss-server
 
 tests:
-  rss-server-proto-test:
+  sorss-server-test:
     main: Spec.hs
     source-dirs: test
     ghc-options:
@@ -67,7 +67,7 @@ tests:
       - -with-rtsopts=-N
     dependencies:
       - base
-      - rss-server-proto
+      - sorss-server
       - hspec
       - hspec-wai
       - hspec-wai-json
